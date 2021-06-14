@@ -1,4 +1,4 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property } from '@loopback/repository';
 
 @model()
 export class Project extends Entity {
@@ -31,13 +31,13 @@ export class Project extends Entity {
     type: 'date',
     required: true,
   })
-  initialDate: string;
+  initialDate: Date;
 
   @property({
     type: 'date',
     required: true,
   })
-  endDate: string;
+  endDate: Date;
 
   @property({
     type: 'array',

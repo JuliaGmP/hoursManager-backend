@@ -30,7 +30,8 @@
     "migrate": "node ./dist/migrate",
     "prestart": "npm run build",
     "start": "node -r source-map-support/register .",
-    "prepublishOnly": "npm run test"
+    "prepublishOnly": "npm run test",
+    "populate": "npm run build && node ./dist/populate"
   },
   "repository": {
     "type": "git"
@@ -54,7 +55,10 @@
     "@loopback/rest": "^9.3.0",
     "@loopback/rest-explorer": "^3.3.0",
     "@loopback/service-proxy": "^3.2.0",
-    "loopback-connector-mongodb": "^5.5.0"
+    "loopback-connector-mongodb": "^5.5.0",
+    "@loopback/authentication": "^3.2.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "@loopback/build": "^6.4.0",
