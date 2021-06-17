@@ -150,7 +150,7 @@ export class UserController {
   @get('/users/me/userProfile', {
     responses: {
       '200': {
-        description: 'Tenant model instance',
+        description: 'user model instance',
         content: { 'application/json': { schema: getModelSchemaRef(User) } },
       },
     },
@@ -204,7 +204,7 @@ export class UserController {
       },
     },
   })
-  @authenticate('jwt', { required: [PermissionKey.ViewOwnTenant] })
+  @authenticate('jwt', { required: [PermissionKey.ViewAnyUser] })
   async findById(
     @param.path.string('id') id: string,
     @param.query.object('filter', getFilterSchemaFor(User)) filter?: Filter<User>
@@ -239,6 +239,26 @@ export class UserController {
     }
     await this.userRepository.updateById(id, user);
   }
+
+  @get('/users', {
+    responses: {
+      '200': {
+        description: 'Array of Clients model instances',
+        content: {
+          'application/json': {
+            schema: { type: 'array', items: getModelSchemaRef(User) },
+          },
+        },
+      },
+    },
+  })
+  @authenticate('jwt', { required: [PermissionKey.ViewAnyUser] })
+  async find(
+    @param.query.object('filter', getFilterSchemaFor(User)) filter?: Filter<User>,
+  ): Promise<User[]> {
+    return this.userRepository.find(filter);
+  }
+
 
   @del('/users/{id}', {
     responses: {

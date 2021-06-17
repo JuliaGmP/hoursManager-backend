@@ -149,7 +149,6 @@ async function createUserCalendar(): Promise<void> {
 
   const mockUserCalendarLength = mockUserCalendar.length;
   for (let i = 0; i < mockUserCalendarLength; i++) {
-    //Check if Tenant from the Mock Data exist
     const dataObj = await userCalendarRepository.findOne(
       {
         where: {
@@ -180,7 +179,6 @@ async function createHours(): Promise<void> {
 
   const hoursLength = mockHours.length;
   for (let i = 0; i < hoursLength; i++) {
-    //Check if Tenant from the Mock Data exist
     const dataObj = await hoursRepository.findOne(
       {
         where: {

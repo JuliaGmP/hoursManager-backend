@@ -9,7 +9,7 @@ export class ProjectRepository extends DefaultCrudRepository<
   ProjectRelations
 > {
   constructor(
-    @inject('datasources.taskManagerMongoDB') dataSource: HoursManagerDataSource,
+    @inject('datasources.hoursManager') dataSource: HoursManagerDataSource,
   ) {
     super(Project, dataSource);
   }

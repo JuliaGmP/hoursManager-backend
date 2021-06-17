@@ -11,7 +11,7 @@ export class RoleRepository extends DefaultCrudRepository<
   RoleRelations
 > {
   constructor(
-    @inject('datasources.taskManagerMongoDB')
+    @inject('datasources.hoursManager')
     dataSource: HoursManagerDataSource,
   ) {
     super(Role, dataSource);

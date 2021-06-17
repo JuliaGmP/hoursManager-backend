@@ -9,7 +9,7 @@ export class UserCalendarRepository extends DefaultCrudRepository<
   UserCalendarRelations
 > {
   constructor(
-    @inject('datasources.taskManagerMongoDB') dataSource: HoursManagerDataSource,
+    @inject('datasources.hoursManager') dataSource: HoursManagerDataSource,
   ) {
     super(UserCalendar, dataSource);
   }

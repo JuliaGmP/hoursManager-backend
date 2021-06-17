@@ -8,11 +8,10 @@ export const enum PermissionKey {
   ManageHours = 'ManageHours',
 
   //GESTOR PERMISSIONS\\
-  
+
   ViewAnyUser = 'ViewAnyUser',
   ManageProjects = 'ManageProjects',
   ViewRoles = 'ViewRoles',
-  ViewOwnTenant = 'ViewOwnTenant',
   ViewOwnProjects = 'ViewOwnProjects',
 
   //COMPANY ADMIN PERMISSIONS\\
@@ -25,8 +24,6 @@ export const enum PermissionKey {
 
   //ADMIN PERMISSIONS ONLY\\
 
-  ManageTenants = 'ManageTenants',
   ManageRoles = 'ManageRoles',
-  ViewAnyTenant = 'ViewAnyTenant'
 
 }
