@@ -1,64 +1,30 @@
-[{
-  "role" : "NormalUser",
-  "permissions" : [ 
-      "ViewOwnUser", 
-      "UpdateOwnUser", 
+[
+  {
+    "role": "NormalUser",
+    "permissions": [
+      "ViewOwnUser",
+      "UpdateOwnUser",
       "DeleteOwnUser",
       "ManageHours"
-  ]
-},
-{
-  "role" : "Gestor",
-  "permissions" : [ 
-    "ViewOwnUser", 
-    "UpdateOwnUser", 
-    "DeleteOwnUser", 
-    "ManageHours",
-    "ViewAnyUser",
-    "ManageProjects", 
-    "ViewRoles",
-    "ViewOwnTenant",
-    "ViewOwnProject"
-  ]
-},
-{
-  "role" : "CompanyAdmin",
-  "permissions" : [ 
-    "ViewOwnUser", 
-    "UpdateOwnUser", 
-    "DeleteOwnUser", 
-    "ManageHours",
-    "ViewAnyUser",
-    "ManageProjects", 
-    "ViewRoles",
-    "ViewOwnTenant",
-    "ViewOwnProject",
-    "CreateUser",
-    "UpdateAnyUser",
-    "DeleteAnyUser",
-    "ManageClients",
-    "ViewAnyProjects"
-  ]
-},
-{
-  "role" : "SuperAdmin",
-  "permissions" : [ 
-    "ViewOwnUser", 
-    "UpdateOwnUser", 
-    "DeleteOwnUser", 
-    "ManageHours",
-    "ViewAnyUser",
-    "ManageProjects", 
-    "ViewRoles",
-    "ViewOwnTenant",
-    "ViewOwnProject",
-    "CreateUser",
-    "UpdateAnyUser",
-    "DeleteAnyUser",
-    "ManageClients",
-    "ViewAnyProjects",
-    "ManageTenants",
-    "ManageRoles",
-    "ViewAnyTenant"
-  ]
-}]
+    ]
+  },
+  {
+    "role": "Admin",
+    "permissions": [
+      "ViewOwnUser",
+      "UpdateOwnUser",
+      "DeleteOwnUser",
+      "ManageHours",
+      "ViewAnyUser",
+      "ManageProjects",
+      "ViewRoles",
+      "ViewOwnProject",
+      "CreateUser",
+      "UpdateAnyUser",
+      "DeleteAnyUser",
+      "ManageClients",
+      "ViewAnyProjects",
+      "ManageRoles"
+    ]
+  }
+]

@@ -1,16 +1,16 @@
 import { DefaultCrudRepository } from '@loopback/repository';
-import { Project, ProjectRelations } from '../models';
+import { UserCalendar, UserCalendarRelations } from '../models';
 import { HoursManagerDataSource } from '../datasources';
 import { inject } from '@loopback/core';
 
-export class ProjectRepository extends DefaultCrudRepository<
-  Project,
-  typeof Project.prototype.id,
-  ProjectRelations
+export class UserCalendarRepository extends DefaultCrudRepository<
+  UserCalendar,
+  typeof UserCalendar.prototype.id,
+  UserCalendarRelations
 > {
   constructor(
     @inject('datasources.taskManagerMongoDB') dataSource: HoursManagerDataSource,
   ) {
-    super(Project, dataSource);
+    super(UserCalendar, dataSource);
   }
 }

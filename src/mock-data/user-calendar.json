@@ -1,27 +1,25 @@
-[
-    {
-        "name": "calendarTest",
-        "schedule": [
-            {
-                "day": "Monday",
-                "hours": 8
-            },
-            {
-                "day": "Tuesday",
-                "hours": 8
-            },
-            {
-                "day": "Wednesday",
-                "hours": 8
-            },
-            {
-                "day": "Thursday",
-                "hours": 8
-            },
-            {
-                "day": "Friday",
-                "hours": 8
-            }
-        ]
-    }
-]
+[{
+    "name" : "calendarTest",
+    "schedule" : [
+        {   
+            "day": "Monday",
+            "hours": 8
+        },
+        {   
+            "day": "Tuesday",
+            "hours": 8
+        },
+        {   
+            "day": "Wednesday",
+            "hours": 8
+        },
+        {   
+            "day": "Thursday",
+            "hours": 8
+        },
+        {   
+            "day": "Friday",
+            "hours": 8
+        }
+    ]
+}]

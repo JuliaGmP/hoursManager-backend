@@ -27,12 +27,9 @@ export async function main(options: ApplicationConfig = {}) {
     },
   };
 
-
-
   const app = new HoursManagerBackendApplication(options);
 
   app.api(spec);
-
   await app.boot();
   await app.start();
 

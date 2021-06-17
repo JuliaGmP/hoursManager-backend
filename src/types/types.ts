@@ -34,7 +34,7 @@ export const UserProfileSchema = {
       type: 'string',
       minLength: 8,
     },
-    userWeeklyScheduleID: {
+    userCalendarID: {
       type: "string"
     }
     //rolesID: {
@@ -58,5 +58,58 @@ export const UserRequestBody = {
 export interface Credential {
   email: string;
   password: string;
+  permissions: PermissionKey[];
 }
 
+export const CredentialsSchema = {
+  type: 'object',
+  required: ['email', 'password'],
+  properties: {
+    email: {
+      type: 'string',
+      format: 'email',
+    },
+    password: {
+      type: 'string',
+      minLength: 8,
+    }
+  },
+};
+
+//uses CredentialsSchema, for API controller
+export const CredentialsRequestBody = {
+  description: 'The input of login function',
+  required: true,
+  content: {
+    'application/json': { schema: CredentialsSchema },
+  },
+};
+
+export interface CredentialResetPassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export const CredentialResetPasswordSchema = {
+  type: 'object',
+  required: ['oldPassword', 'newPassword'],
+  properties: {
+    oldPassword: {
+      type: 'string',
+      minLength: 8,
+    },
+    newPassword: {
+      type: 'string',
+      minLength: 8,
+    },
+  },
+};
+
+//uses CredentialsSchema, for API controller
+export const CredentialResetPasswordRequestBody = {
+  description: 'The input of login function',
+  required: true,
+  content: {
+    'application/json': { schema: CredentialResetPasswordSchema },
+  },
+};

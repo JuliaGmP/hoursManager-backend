@@ -2,7 +2,6 @@ import {
   Count,
   CountSchema,
   Filter,
-  FilterExcludingWhere,
   repository,
   Where,
 } from '@loopback/repository';
@@ -10,111 +9,88 @@ import {
   post,
   param,
   get,
+  getFilterSchemaFor,
   getModelSchemaRef,
+  getWhereSchemaFor,
   patch,
   put,
   del,
   requestBody,
-  response,
 } from '@loopback/rest';
 import {Role} from '../models';
 import {RoleRepository} from '../repositories';
+import { authenticate } from '@loopback/authentication';
+import { PermissionKey } from '../authorization/permission-key';
 
 export class RoleController {
   constructor(
     @repository(RoleRepository)
-    public roleRepository : RoleRepository,
+    public roleRepository: RoleRepository,
   ) {}
 
-  @post('/roles')
-  @response(200, {
-    description: 'Role model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Role)}},
-  })
-  async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Role, {
-            title: 'NewRole',
-            exclude: ['id'],
-          }),
-        },
+  @post('/roles', {
+    responses: {
+      '200': {
+        description: 'Role model instance',
+        content: {'application/json': {schema: {'x-ts-type': Role}}},
       },
-    })
-    role: Omit<Role, 'id'>,
-  ): Promise<Role> {
+    },
+  })
+  @authenticate('jwt', { required: [PermissionKey.ManageRoles] })
+  async create(@requestBody({
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Role, {
+          title: 'NewRole',
+          exclude: ['id'],
+        }),
+      },
+    },
+  }) role: Role): Promise<Role> {
     return this.roleRepository.create(role);
   }
 
-  @get('/roles/count')
-  @response(200, {
-    description: 'Role model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(Role) where?: Where<Role>,
-  ): Promise<Count> {
-    return this.roleRepository.count(where);
-  }
-
-  @get('/roles')
-  @response(200, {
-    description: 'Array of Role model instances',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(Role, {includeRelations: true}),
+  @get('/roles', {
+    responses: {
+      '200': {
+        description: 'Array of Role model instances',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: {'x-ts-type': Role}},
+          },
         },
       },
     },
   })
+  @authenticate('jwt', { required: [PermissionKey.ViewRoles] })
   async find(
-    @param.filter(Role) filter?: Filter<Role>,
+    @param.query.object('filter', getFilterSchemaFor(Role))
+    filter?: Filter<Role>,
   ): Promise<Role[]> {
-    return this.roleRepository.find(filter);
+    return this.roleRepository.find({where : {role : {nlike : "SuperAdmin"}}});
   }
 
-  @patch('/roles')
-  @response(200, {
-    description: 'Role PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Role, {partial: true}),
-        },
-      },
-    })
-    role: Role,
-    @param.where(Role) where?: Where<Role>,
-  ): Promise<Count> {
-    return this.roleRepository.updateAll(role, where);
-  }
-
-  @get('/roles/{id}')
-  @response(200, {
-    description: 'Role model instance',
-    content: {
-      'application/json': {
-        schema: getModelSchemaRef(Role, {includeRelations: true}),
+  @get('/roles/{id}', {
+    responses: {
+      '200': {
+        description: 'Role model instance',
+        content: {'application/json': {schema: {'x-ts-type': Role}}},
       },
     },
   })
-  async findById(
-    @param.path.string('id') id: string,
-    @param.filter(Role, {exclude: 'where'}) filter?: FilterExcludingWhere<Role>
-  ): Promise<Role> {
-    return this.roleRepository.findById(id, filter);
+  @authenticate('jwt', { required: [PermissionKey.ViewRoles] })
+  async findById(@param.path.string('id') id: string): Promise<Role> {
+    return this.roleRepository.findById(id);
   }
 
-  @patch('/roles/{id}')
-  @response(204, {
-    description: 'Role PATCH success',
+  @patch('/roles/{id}', {
+    responses: {
+      '204': {
+        description: 'Role PATCH success',
+      },
+    },
   })
+  @authenticate('jwt', { required: [PermissionKey.ManageRoles] })
   async updateById(
     @param.path.string('id') id: string,
     @requestBody({
@@ -129,21 +105,14 @@ export class RoleController {
     await this.roleRepository.updateById(id, role);
   }
 
-  @put('/roles/{id}')
-  @response(204, {
-    description: 'Role PUT success',
+  @del('/roles/{id}', {
+    responses: {
+      '204': {
+        description: 'Role DELETE success',
+      },
+    },
   })
-  async replaceById(
-    @param.path.string('id') id: string,
-    @requestBody() role: Role,
-  ): Promise<void> {
-    await this.roleRepository.replaceById(id, role);
-  }
-
-  @del('/roles/{id}')
-  @response(204, {
-    description: 'Role DELETE success',
-  })
+  @authenticate('jwt', { required: [PermissionKey.ManageRoles] })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.roleRepository.deleteById(id);
   }

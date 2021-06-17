@@ -1,7 +1,7 @@
-import { Entity, model, property } from '@loopback/repository';
+import {Entity, model, property} from '@loopback/repository';
 import { PermissionKey } from '../authorization/permission-key';
 
-@model()
+@model({settings: {}})
 export class Role extends Entity {
   @property({
     type: 'string',
@@ -13,16 +13,12 @@ export class Role extends Entity {
   @property({
     type: 'string',
     required: true,
+    unique: true,
   })
-  name: string;
+  role: string;
 
-  @property({
-    type: 'array',
-    itemType: 'string',
-    required: true,
-  })
+  @property.array(String)
   permissions: PermissionKey[];
-
 
   constructor(data?: Partial<Role>) {
     super(data);

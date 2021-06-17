@@ -10,7 +10,7 @@ import { ServiceMixin } from '@loopback/service-proxy';
 import * as path from 'path';
 import { MySequence } from './sequence';
 import { MyAuthBindings } from './authorization/keys';
-import { JWTService } from './authorization/JWT.service';
+import { JWTService } from './services';
 import { JWTStrategy } from './authorization/strategies/JWT.strategy';
 import { UserPermissionsProvider } from './authorization/providers/user-permissions.provider';
 import {
@@ -28,7 +28,7 @@ export class HoursManagerBackendApplication extends BootMixin(
     this.component(AuthenticationComponent);
 
     // Bind JWT & permission authentication strategy related elements
-    registerAuthenticationStrategy(this as any, JWTStrategy);
+    registerAuthenticationStrategy(this, JWTStrategy);
     this.bind(MyAuthBindings.TOKEN_SERVICE).toClass(JWTService);
     this.bind(MyAuthBindings.USER_PERMISSIONS).toProvider(
       UserPermissionsProvider,

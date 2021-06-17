@@ -1,4 +1,4 @@
-import { RoleRepository, UserRepository, HoursRepository, ClientRepository, ProjectRepository, UserWeeklyScheduleRepository } from './repositories';
+import { RoleRepository, UserRepository, UserCalendarRepository, HoursRepository, ClientsRepository, ProjectRepository } from './repositories';
 
 import { HoursManagerDataSource } from './datasources';
 import * as mockUsers from './mock-data/users.json';
@@ -9,22 +9,18 @@ import * as mockClients from './mock-data/clients.json';
 import * as mockProjects from './mock-data/projects.json';
 
 
-import { User, Role, UserWeeklySchedule, Hours, Client, Project } from './models';
+import { User, Role, UserCalendar, Hours, Clients, Project } from './models';
 import { PermissionKey } from './authorization/permission-key';
 
 const db = new HoursManagerDataSource();
-let tenantID: string[] = [];
 let rolesIDs: string[] = [];
-let templateCalendarID: string = "";
-let UserWeeklyScheduleID: string = "";
+let userCalendarID: string = "";
 let userIDs: string[] = [];
 let clientID: string[] = [];
-let statusIDs: string[] = [];
-let projectTypesIDs: string[] = [];
 let projectIDs: string[] = [];
 
 
-export async function populate(_args: string) {
+export async function populate() {
 
   console.log('Deleting database mock data...');
   await deleteMockData()
@@ -40,7 +36,6 @@ export async function populate(_args: string) {
 }
 
 async function createMockData(): Promise<void> {
-  console.log('Populating database with mock data...');
 
   await createUserCalendar();
   await createRoles();
@@ -54,9 +49,9 @@ async function createMockData(): Promise<void> {
 async function deleteMockData(): Promise<void> {
   const usersRepo = new UserRepository(db);
   const roleRepo = new RoleRepository(db);
-  const userCalendarRepository = new UserWeeklyScheduleRepository(db);
+  const userCalendarRepository = new UserCalendarRepository(db);
   const hoursRepository = new HoursRepository(db);
-  const clientRepository = new ClientRepository(db);
+  const clientsRepository = new ClientsRepository(db);
   const projectRepository = new ProjectRepository(db);
 
 
@@ -64,7 +59,7 @@ async function deleteMockData(): Promise<void> {
   await roleRepo.deleteAll()
   await userCalendarRepository.deleteAll()
   await hoursRepository.deleteAll()
-  await clientRepository.deleteAll()
+  await clientsRepository.deleteAll()
   await projectRepository.deleteAll()
 
 }
@@ -72,8 +67,8 @@ async function deleteMockData(): Promise<void> {
 async function createUsers(): Promise<void> {
   const usersRepo = new UserRepository(db);
   const roleRepo = new RoleRepository(db);
-
-  for (const i in mockUsers) {
+  const usersLength = mockUsers.length;
+  for (let i = 0; i < usersLength; i++) {
     //Check if Users from the Mock Data exist
     const dataObj = await usersRepo.findOne(
       {
@@ -95,13 +90,13 @@ async function createUsers(): Promise<void> {
 
       const userObj = new User({
         name: mockUsers[i].name,
-        userWeeklyScheduleID: UserWeeklyScheduleID,
+        userCalendarID: userCalendarID,
         email: mockUsers[i].email,
         password: bcrypt.hashSync(mockUsers[i].password, salt),
-        rolesId: mockUsers[i].name === "User 1" ? [rolesIDs[3]] : [rolesIDs[0]]
+        rolesID: mockUsers[i].name === "User 1 - Admin" ? [rolesIDs[1]] : [rolesIDs[0]]
       });
 
-      const roles = await roleRepo.find({ where: { id: mockUsers[i].name === "User 1" ? rolesIDs[3] : rolesIDs[0] } })
+      const roles = await roleRepo.find({ where: { id: mockUsers[i].name === "User 1 - Admin" ? rolesIDs[1] : rolesIDs[0] } })
       let totalPermissions: PermissionKey[] = []
       roles.map(role => {
         totalPermissions = totalPermissions.concat(role.permissions)
@@ -119,12 +114,13 @@ async function createUsers(): Promise<void> {
 async function createRoles(): Promise<void> {
   const roleRepo = new RoleRepository(db);
 
-  for (const i in mockRoles) {
+  const rolesLength = mockRoles.length;
+  for (let i = 0; i < rolesLength; i++) {
     //Check if Users from the Mock Data exist
     const dataObj = await roleRepo.findOne(
       {
         where: {
-          name: mockRoles[i].role,
+          role: mockRoles[i].role,
         },
       },
       { useQuerystring: true },
@@ -136,27 +132,23 @@ async function createRoles(): Promise<void> {
       const iReal = i + 1;
 
       const roleObj = new Role({
-        name: mockRoles[i].role,
+        role: mockRoles[i].role,
         permissions: mockRoles[i].permissions as PermissionKey[],
       });
 
       const role = await roleRepo.create(roleObj);
       rolesIDs.push(role.id!)
-      console.log('Role ' + iReal + ' created with role ' + roleObj.name);
+      console.log('Role ' + iReal + ' created with role ' + roleObj.role);
 
     }
   }
 }
 
-
-
 async function createUserCalendar(): Promise<void> {
-  const userCalendarRepository = new UserWeeklyScheduleRepository(db);
-  console.log('Populating database with mock data...');
+  const userCalendarRepository = new UserCalendarRepository(db);
 
-  for (const i in mockUserCalendar) {
-    console.log('Populating database with mock data...');
-
+  const mockUserCalendarLength = mockUserCalendar.length;
+  for (let i = 0; i < mockUserCalendarLength; i++) {
     //Check if Tenant from the Mock Data exist
     const dataObj = await userCalendarRepository.findOne(
       {
@@ -172,12 +164,12 @@ async function createUserCalendar(): Promise<void> {
     } else {
       const iReal = i + 1;
 
-      const userCalendarObj = new UserWeeklySchedule({
+      const userCalendarObj = new UserCalendar({
         name: mockUserCalendar[i].name,
-        schedule: mockUserCalendar[i].schedule
+        schedule: mockUserCalendar[i].schedule,
       });
       const userCalendar = await userCalendarRepository.create(userCalendarObj);
-      UserWeeklyScheduleID = userCalendar.id!
+      userCalendarID = userCalendar.id!
       console.log('User Calendar ' + iReal + ' created with id ' + userCalendar.id);
     }
   }
@@ -186,7 +178,8 @@ async function createUserCalendar(): Promise<void> {
 async function createHours(): Promise<void> {
   const hoursRepository = new HoursRepository(db);
 
-  for (const i in mockHours) {
+  const hoursLength = mockHours.length;
+  for (let i = 0; i < hoursLength; i++) {
     //Check if Tenant from the Mock Data exist
     const dataObj = await hoursRepository.findOne(
       {
@@ -205,7 +198,7 @@ async function createHours(): Promise<void> {
       const HourtsObj = new Hours({
         date: new Date(mockHours[i].date),
         userId: userIDs[0],
-        numberHours: mockHours[i].number_hours,
+        number_hours: mockHours[i].number_hours,
         idProject: projectIDs[0]
       });
       const hours = await hoursRepository.create(HourtsObj);
@@ -215,10 +208,11 @@ async function createHours(): Promise<void> {
 }
 
 async function createClients(): Promise<void> {
-  const clientRepository = new ClientRepository(db);
+  const clientsRepository = new ClientsRepository(db);
 
-  for (const i in mockClients) {
-    const dataObj = await clientRepository.findOne(
+  const clientsLength = mockClients.length;
+  for (let i = 0; i < clientsLength; i++) {
+    const dataObj = await clientsRepository.findOne(
       {
         where: {
           name: mockClients[i].name,
@@ -232,10 +226,13 @@ async function createClients(): Promise<void> {
     } else {
       const iReal = i + 1;
 
-      const clientObj = new Client({
+      const clientObj = new Clients({
         name: mockClients[i].name,
+        web: mockClients[i].web,
+        email: mockClients[i].email,
+        phone: mockClients[i].phone
       });
-      const client = await clientRepository.create(clientObj);
+      const client = await clientsRepository.create(clientObj);
       clientID.push(client.id!);
       console.log('Client ' + iReal + ' created with id ' + client.id);
     }
@@ -245,7 +242,8 @@ async function createClients(): Promise<void> {
 async function createProjects(): Promise<void> {
   const projectRepository = new ProjectRepository(db);
 
-  for (const i in mockProjects) {
+  const projectsLength = mockProjects.length;
+  for (let i = 0; i < projectsLength; i++) {
     const dataObj = await projectRepository.findOne(
       {
         where: {
@@ -275,7 +273,7 @@ async function createProjects(): Promise<void> {
   }
 }
 
-populate(process.argv[2]).catch(err => {
+populate().catch(err => {
   console.error('Cannot populate database', err);
   process.exit(1);
 });

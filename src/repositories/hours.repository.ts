@@ -1,7 +1,7 @@
-import {inject} from '@loopback/core';
-import {DefaultCrudRepository} from '@loopback/repository';
-import {HoursManagerDataSource} from '../datasources';
-import {Hours, HoursRelations} from '../models';
+import { DefaultCrudRepository } from '@loopback/repository';
+import { Hours, HoursRelations } from '../models';
+import { HoursManagerDataSource } from '../datasources';
+import { inject } from '@loopback/core';
 
 export class HoursRepository extends DefaultCrudRepository<
   Hours,
@@ -9,7 +9,7 @@ export class HoursRepository extends DefaultCrudRepository<
   HoursRelations
 > {
   constructor(
-    @inject('datasources.hoursManager') dataSource: HoursManagerDataSource,
+    @inject('datasources.taskManagerMongoDB') dataSource: HoursManagerDataSource,
   ) {
     super(Hours, dataSource);
   }

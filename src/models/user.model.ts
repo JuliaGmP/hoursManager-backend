@@ -1,20 +1,15 @@
 import { Entity, model, property } from '@loopback/repository';
 import { PermissionKey } from '../authorization/permission-key';
+import { v4 as uuid } from 'uuid';
 
-@model()
+@model({ settings: { strict: false } })
 export class User extends Entity {
   @property({
     type: 'string',
     id: true,
-    generated: true,
+    default: () => uuid(),
   })
   id?: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  userWeeklyScheduleID: string;
 
   @property({
     type: 'string',
@@ -24,26 +19,27 @@ export class User extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false
   })
   email: string;
 
   @property({
     type: 'string',
-    required: true,
+    required: false
   })
   password: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
-    required: true,
+    type: 'string',
+    required: true
   })
-  rolesId: string[];
+  userCalendarID: string;
+
+  @property.array(String)
+  rolesID: string[];
 
   @property.array(String)
   permissions: PermissionKey[];
-
 
   constructor(data?: Partial<User>) {
     super(data);

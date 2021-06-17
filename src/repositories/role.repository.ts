@@ -1,9 +1,9 @@
-import { inject } from '@loopback/core';
 import { DefaultCrudRepository } from '@loopback/repository';
-import { HttpErrors } from '@loopback/rest';
-import { PermissionKey } from '../authorization/permission-key';
-import { HoursManagerDataSource } from '../datasources';
 import { Role, RoleRelations } from '../models';
+import { HoursManagerDataSource } from '../datasources';
+import { inject } from '@loopback/core';
+import { PermissionKey } from '../authorization/permission-key';
+import { HttpErrors } from '@loopback/rest';
 
 export class RoleRepository extends DefaultCrudRepository<
   Role,
@@ -11,7 +11,8 @@ export class RoleRepository extends DefaultCrudRepository<
   RoleRelations
 > {
   constructor(
-    @inject('datasources.hoursManager') dataSource: HoursManagerDataSource,
+    @inject('datasources.taskManagerMongoDB')
+    dataSource: HoursManagerDataSource,
   ) {
     super(Role, dataSource);
   }

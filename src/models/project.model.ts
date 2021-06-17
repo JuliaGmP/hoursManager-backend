@@ -29,23 +29,17 @@ export class Project extends Entity {
 
   @property({
     type: 'date',
-    required: true,
+    default: () => new Date(),
   })
   initialDate: Date;
 
   @property({
-    type: 'date',
-    required: true,
+    type: 'date'
   })
   endDate: Date;
 
-  @property({
-    type: 'array',
-    itemType: 'string',
-    required: true,
-  })
+  @property.array(String)
   userIDs: string[];
-
 
   constructor(data?: Partial<Project>) {
     super(data);

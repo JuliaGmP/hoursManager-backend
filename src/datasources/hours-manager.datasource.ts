@@ -1,5 +1,5 @@
-import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
-import {juggler} from '@loopback/repository';
+import { inject, lifeCycleObserver, LifeCycleObserver } from '@loopback/core';
+import { juggler } from '@loopback/repository';
 
 const config = {
   name: 'hoursManager',
@@ -9,7 +9,7 @@ const config = {
   port: 0,
   user: '',
   password: '',
-  database: '',
+  database: 'hoursManager',
   useNewUrlParser: true
 };
 
@@ -24,7 +24,7 @@ export class HoursManagerDataSource extends juggler.DataSource
   static readonly defaultConfig = config;
 
   constructor(
-    @inject('datasources.config.hoursManager', {optional: true})
+    @inject('datasources.config.hoursManager', { optional: true })
     dsConfig: object = config,
   ) {
     super(dsConfig);
