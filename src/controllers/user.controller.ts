@@ -97,7 +97,7 @@ export class UserController {
     //Encryption pass
     const bcrypt = await require('bcryptjs');
     const salt = await bcrypt.genSaltSync(10);
-    savedUser.password = await bcrypt.hashSync(savedUser.password, salt);
+    savedUser.password = await bcrypt.hashSync(user.password, salt);
 
     // create the new user
     savedUser = await this.userRepository.create(savedUser);
