@@ -140,7 +140,7 @@ export class HoursController {
     dateWeek = new Date(dateWeek)
     let weekDays = []
     for (let i = 0; i <= 6; i++) {
-      const currentDayNumber = dateWeek.getDay() - 1 // monday = 0, Tuesday = 1 ...
+      const currentDayNumber = dateWeek.getDay() - 2 // monday = 0, Tuesday = 1 ...
       const dayOfTheMonth = dateWeek.getDate() - (currentDayNumber >= 0 ? currentDayNumber : 6) + i
       const day = new Date(dateWeek.setDate(dayOfTheMonth))
       if (i === 0) {
