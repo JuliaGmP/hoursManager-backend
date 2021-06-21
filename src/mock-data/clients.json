@@ -1,12 +1,14 @@
-[{
-  "name": "ClienteTest1",
-  "web": "www.clienteTest1.com",
-  "email": "ClienteTest1@taskmanager.com",
-  "phone": "12345678"
-},
-{
-  "name": "ClienteTest2",
-  "web": "www.clienteTest2.com",
-  "email": "ClienteTest2@taskmanager.com",
-  "phone": "12345678"
-}]
+[
+  {
+    "name": "ClienteTest1",
+    "web": "www.clienteTest1.com",
+    "email": "ClienteTest1@hoursmanager.com",
+    "phone": "12345678"
+  },
+  {
+    "name": "ClienteTest2",
+    "web": "www.clienteTest2.com",
+    "email": "ClienteTest2@hoursmanager.com",
+    "phone": "12345678"
+  }
+]

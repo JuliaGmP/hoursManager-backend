@@ -92,7 +92,7 @@ export class ProjectController {
       },
     },
   })
-  @authenticate('jwt', { required: [PermissionKey.ManageProjects] })
+  @authenticate('jwt', { required: [PermissionKey.ManageHours] })
   async findById(@param.path.string('id') id: string): Promise<Project> {
     return this.projectRepository.findById(id);
   }

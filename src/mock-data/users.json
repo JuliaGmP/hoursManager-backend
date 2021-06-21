@@ -2,31 +2,31 @@
   {
     "id": "User1MockData",
     "name": "User 1 - Admin",
-    "email": "user1mockdata@taskmanager.com",
+    "email": "user1mockdata@hoursmanager.com",
     "password": "password1"
   },
   {
     "id": "User1MockData",
     "name": "User 2",
-    "email": "user2mockdata@taskmanager.com",
+    "email": "user2mockdata@hoursmanager.com",
     "password": "password1"
   },
   {
     "id": "User1MockData",
     "name": "User 3",
-    "email": "user3mockdata@taskmanager.com",
+    "email": "user3mockdata@hoursmanager.com",
     "password": "password1"
   },
   {
     "id": "User1MockData",
     "name": "User 4",
-    "email": "user4mockdata@taskmanager.com",
+    "email": "user4mockdata@hoursmanager.com",
     "password": "password1"
   },
   {
     "id": "User1MockData",
     "name": "User 5",
-    "email": "user5mockdata@taskmanager.com",
+    "email": "user5mockdata@hoursmanager.com",
     "password": "password1"
   }
 ]
